@@ -13,6 +13,7 @@ import re
 import sys
 import random
 import string
+import urllib
 
 
 def load_send():
@@ -61,11 +62,11 @@ def getinfo(ck):
         for i in range(len(json.loads(response.text)['data']['list'])):
             if(json.loads(response.text)['data']['list'][i]['text']['text']).find('试用资格将保留')!=-1:
                 print(json.loads(response.text)['data']['list'][i]['trialName'])
-                send("京东试用待领取物品通知",'账号名称：'+ptpin+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
+                send("京东试用待领取物品通知",'账号名称：'+urllib.parse.unquote(ptpin)+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
                 isnull=False
             i+=1
         if isnull==True:
-            print("没有在有效期内待领取的试用品")
+            print("没有在有效期内待领取的试用品\n\n")
     except:
         pass
 if __name__ == '__main__':
@@ -84,7 +85,7 @@ if __name__ == '__main__':
     if jd_try_notify=='True' or jd_try_notify=='true':
         for ck in cks:
             ptpin = re.findall(r"pt_pin=(.*?);", ck)[0]
-            printf("--账号:" + ptpin + "--")
+            printf("--账号:" + urllib.parse.unquote(ptpin) + "--")
             getinfo(ck)
     else:
             print('环境变量设置错误，如需运行请修改环境变量jd_try_notify="True"')
