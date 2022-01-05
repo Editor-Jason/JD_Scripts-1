@@ -14,10 +14,12 @@ import re
 import sys
 import random
 import string
+import urllib
 
 
 
 #以下部分参考Curtin的脚本：https://github.com/curtinlv/JD-Script
+
 UserAgent = ''
 uuid=''.join(random.sample(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','a','b','c','z'], 40))
 addressid = ''.join(random.sample('1234567898647', 10))
@@ -75,7 +77,10 @@ def get_remarkinfo():
         for i in range(len(json.loads(response.text)['data'])):
             if json.loads(response.text)['data'][i]['name']=='JD_COOKIE':
                 try:
-                    remarkinfos[json.loads(response.text)['data'][i]['value'].split(';')[1].replace('pt_pin=','')]=json.loads(response.text)['data'][i]['remarks'].replace('remark=','')
+                    if json.loads(response.text)['data'][i]['remarks'].find('@@')==-1:
+                        remarkinfos[json.loads(response.text)['data'][i]['value'].split(';')[1].replace('pt_pin=','')]=json.loads(response.text)['data'][i]['remarks'].replace('remark=','')
+                    else:
+                        remarkinfos[json.loads(response.text)['data'][i]['value'].split(';')[1].replace('pt_pin=','')]=json.loads(response.text)['data'][i]['remarks'].split("@@")[0].replace('remark=','').replace(';','')
                 except:
                     pass
     except:
@@ -101,13 +106,15 @@ def get_succeedinfo(ck):
         for i in range(len(json.loads(response.text)['data']['list'])):
             if(json.loads(response.text)['data']['list'][i]['text']['text']).find('试用资格将保留')!=-1:
                 print(json.loads(response.text)['data']['list'][i]['trialName'])
-                if remarkinfos[ptpin]!='':
-                    send("京东试用待领取物品通知",'账号名称：'+remarkinfos[ptpin]+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
-                    isnull=False
-                else:
-                    send("京东试用待领取物品通知",'账号名称：'+ptpin+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
-                    isnull=False 
-            i+=1
+                try:
+                    if remarkinfos[ptpin]!='':
+                        send("京东试用待领取物品通知",'账号名称：'+remarkinfos[ptpin]+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
+                        isnull=False
+                    else:
+                        send("京东试用待领取物品通知",'账号名称：'+urllib.parse.unquote(ptpin)+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
+                        isnull=False 
+                except Exception as e:
+                    printf(e.value)
         if isnull==True:
             print("没有在有效期内待领取的试用品\n\n")
     except:
@@ -127,8 +134,11 @@ if __name__ == '__main__':
         f.close()
     for ck in cks:
         ptpin = re.findall(r"pt_pin=(.*?);", ck)[0]
-        if remarkinfos[ptpin]!='':
-            printf("--账号:" + remarkinfos[ptpin] + "--")
-        else:
-            printf("--无备注账号:" + ptpin + "--")
+        try:
+            if remarkinfos[ptpin]!='':
+                printf("--账号:" + remarkinfos[ptpin] + "--")
+            else:
+                printf("--无备注账号:" + urllib.parse.unquote(ptpin) + "--")
+        except Exception as e:
+            printf(e.value)
         get_succeedinfo(ck)
