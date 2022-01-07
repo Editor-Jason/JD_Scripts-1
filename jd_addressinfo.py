@@ -1,4 +1,4 @@
-import requests,os
+import requests,os,json
 
 cookie=''#pt_key=xxx;pt_pin=xxx;
 
@@ -18,5 +18,9 @@ headers={
     "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36 Edg/96.0.1054.34"
     }
 response=requests.get(url=url,headers=headers)
-print(response.text)
+response=response.text.replace('cbLoadAddressListA(','').replace(')','')
+for i in range(len(json.loads(response)['list'])):
+    print(f'第{str(i+1)}个收获地址信息:')
+    print('\n姓名:'+json.loads(response)['list'][i]['name'])
+    print('\n地址:'+json.loads(response)['list'][i]['addrfull']+'\n\n')
 os.system('pause')
