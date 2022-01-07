@@ -140,5 +140,5 @@ if __name__ == '__main__':
             else:
                 printf("--无备注账号:" + urllib.parse.unquote(ptpin) + "--")
         except Exception as e:
-            printf(str(e))
+            printf("--账号:" + urllib.parse.unquote(ptpin) + "--")
         get_succeedinfo(ck)
