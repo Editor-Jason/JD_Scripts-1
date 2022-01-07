@@ -114,7 +114,7 @@ def get_succeedinfo(ck):
                         send("京东试用待领取物品通知",'账号名称：'+urllib.parse.unquote(ptpin)+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
                         isnull=False 
                 except Exception as e:
-                    printf(e.value)
+                    printf(str(e))
         if isnull==True:
             print("没有在有效期内待领取的试用品\n\n")
     except:
@@ -140,5 +140,5 @@ if __name__ == '__main__':
             else:
                 printf("--无备注账号:" + urllib.parse.unquote(ptpin) + "--")
         except Exception as e:
-            printf(e.value)
+            printf(str(e))
         get_succeedinfo(ck)
