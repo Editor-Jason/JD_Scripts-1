@@ -170,3 +170,4 @@ if __name__ == '__main__':
             for i in range(len(tixianliebiao)):
                 tixian(ck,tixianliebiao[i].split('@')[0],tixianliebiao[i].split('@')[1],tixianliebiao[i].split('@')[2],tixianliebiao[i].split('@')[3])
         printf('\n\n\n')
+        time.sleep(30)
