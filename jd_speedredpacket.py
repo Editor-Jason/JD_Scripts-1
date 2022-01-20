@@ -160,7 +160,7 @@ if __name__ == '__main__':
     get_remarkinfo()#获取备注
     UserAgent=randomuserAgent()
     linkIds=[]
-    templinkIds=requests.get(url='https://raw.githubusercontent.com/Hyper-Beast/JD_Scripts/main/jd_speedredpacket_linkid.txt',headers={"user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62"}).text.replace('[','').replace(']','').replace('\'','').split(',')
+    templinkIds=requests.get(url='https://raw.githubusercontent.com/Hyper-Beast/JD_Scripts/main/jd_speedredpacket_linkid.txt',headers={"user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62"}).text.split(',')
     for templinkid in templinkIds:
         linkIds.append(templinkid)
     try:
