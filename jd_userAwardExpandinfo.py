@@ -63,7 +63,7 @@ load_send()
 def get_remarkinfo():
     url='http://127.0.0.1:5600/api/envs'
     try:
-        with open(os.getcwd().replace('scripts','config')+'/auth.json', 'r') as f:
+        with open('/ql/config/auth.json', 'r') as f:
             token=json.loads(f.read())['token']
         headers={
             'Accept':'application/json',
@@ -75,13 +75,13 @@ def get_remarkinfo():
             if json.loads(response.text)['data'][i]['name']=='JD_COOKIE':
                 try:
                     if json.loads(response.text)['data'][i]['remarks'].find('@@')==-1:
-                        remarkinfos[json.loads(response.text)['data'][i]['value'].split(';')[1].replace('pt_pin=','')]=json.loads(response.text)['data'][i]['remarks'].replace('remark=','').replace(';','')
+                        remarkinfos[json.loads(response.text)['data'][i]['value'].split(';')[1].replace('pt_pin=','')]=json.loads(response.text)['data'][i]['remarks'].replace('remark=','')
                     else:
                         remarkinfos[json.loads(response.text)['data'][i]['value'].split(';')[1].replace('pt_pin=','')]=json.loads(response.text)['data'][i]['remarks'].split("@@")[0].replace('remark=','').replace(';','')
                 except:
                     pass
     except:
-        printf('读取auth.json文件出错，跳过获取备注\n')
+        print('读取auth.json文件出错，跳过获取备注')
 
 def getinfo(ck):
     global sendnotifycation
