@@ -86,7 +86,7 @@ def get_remarkinfo():
         print('读取auth.json文件出错，跳过获取备注')
 
 def choujiang(ck):
-    choujiangurl='https://api.m.jd.com/?functionId=spring_reward_receive&body={"inviter":"","linkId":"'+linkId+'"}&_t='+getnowtime()+'&appid=activities_platform'
+    choujiangurl='https://api.m.jd.com/?functionId=spring_reward_receive&body={"inviter":"","linkId":"%s"}&t=1645603459107&appid=activities_platform&h5st=20220223160420320;2413529808494242;07244;tk02wace11c1018nsPDbHF274OYVdYhemyZUEO+VnplpvBjuIMMtPahDxG2WtMBb5khbGCJQwJX7JZQ2mqi6Emb1ZZS9;c52006981c5c5a3e82a1d5102f5c8984011231ad82506cab025485579f03d397;3.0;1645603460320'%(linkId)
     headers={
         'Accept':'application/json, text/plain, */*',
         'Accept-Encoding':'gzip, deflate, br',
@@ -107,7 +107,7 @@ def choujiang(ck):
         if int(prizeType)==1:
             printf(f'获得{useLimit}-{amount}的优惠券')
         if int(prizeType)==2:
-            printf(f'获得{amount}现金')
+            printf(f'获得{amount}极速版红包')
         if int(prizeType)==4:
             printf(f'获得{amount}微信红包')
     except:
@@ -159,10 +159,6 @@ if __name__ == '__main__':
     remarkinfos={}
     get_remarkinfo()#获取备注
     UserAgent=randomuserAgent()
-    linkIds=[]
-    templinkIds=requests.get(url='https://raw.githubusercontent.com/Hyper-Beast/JD_Scripts/main/jd_speedredpacket_linkid.txt',headers={"user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62"}).text.split(',')
-    for templinkid in templinkIds:
-        linkIds.append(templinkid)
     try:
         cks = os.environ["JD_COOKIE"].split("&")#获取cookie
     except:
@@ -178,12 +174,12 @@ if __name__ == '__main__':
                 printf("--无备注账号:" + urllib.parse.unquote(ptpin) + "--")
         except:
             printf("--账号:" + urllib.parse.unquote(ptpin) + "--")
-        for linkId in linkIds:
-            print("linkId:"+linkId)
-            for i in range(3):
-                choujiang(ck)
-            tixianxinxi(ck)
-            if tixianliebiao:
-                for i in range(len(tixianliebiao)):
-                    tixian(ck,tixianliebiao[i].split('@')[0],tixianliebiao[i].split('@')[1],tixianliebiao[i].split('@')[2],tixianliebiao[i].split('@')[3])
+        linkId='Eu7-E0CUzqYyhZJo9d3YkQ'
+        print("linkId:"+linkId)
+        for i in range(3):
+            choujiang(ck)
+        tixianxinxi(ck)
+        if tixianliebiao:
+            for i in range(len(tixianliebiao)):
+                tixian(ck,tixianliebiao[i].split('@')[0],tixianliebiao[i].split('@')[1],tixianliebiao[i].split('@')[2],tixianliebiao[i].split('@')[3])
         printf('\n\n\n')
