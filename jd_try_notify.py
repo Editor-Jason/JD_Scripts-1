@@ -104,12 +104,8 @@ def get_succeedinfo(ck):
             if(json.loads(response.text)['data']['list'][i]['text']['text']).find('试用资格将保留')!=-1:
                 print(json.loads(response.text)['data']['list'][i]['trialName'])
                 try:
-                    if remarkinfos[ptpin]!='':
-                        send("京东试用待领取物品通知",'账号名称：'+remarkinfos[ptpin]+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
-                        isnull=False
-                    else:
-                        send("京东试用待领取物品通知",'账号名称：'+urllib.parse.unquote(ptpin)+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
-                        isnull=False 
+                    send("京东试用待领取物品通知",'账号名称：'+remarkinfos[ptpin]+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
+                    isnull=False
                 except:
                      send("京东试用待领取物品通知",'账号名称：'+urllib.parse.unquote(ptpin)+'\n'+'商品名称:'+json.loads(response.text)['data']['list'][i]['trialName']+"\n"+"商品链接:https://item.jd.com/"+json.loads(response.text)['data']['list'][i]['skuId']+".html")
                      isnull=False 
